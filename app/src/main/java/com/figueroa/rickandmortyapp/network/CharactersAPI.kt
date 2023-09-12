@@ -11,14 +11,14 @@ import javax.inject.Singleton
 interface CharactersAPI {
 
     @GET("character")
-    fun getAllCharacters(): RickAndMortyCharacter
+    suspend fun getAllCharacters(): RickAndMortyCharacter
 
     @GET("character/{id}")
-    fun getSingleCharacter(@Path("id") id: Int): CharacterResult
+    suspend fun getSingleCharacter(@Path("id") id: Int): CharacterResult
 
     @GET("character/{ids}")
-    fun getMultipleCharacters(@Path("ids") ids: Array<Int>): CharacterResult
+    suspend fun getMultipleCharacters(@Path("ids") ids: Array<Int>): CharacterResult
 
     @GET("character/")
-    fun getFilterCharacters(@Query("name") name: String, @Query("status") status: String): CharacterResult
+    suspend fun getFilterCharacters(@Query("name") name: String, @Query("status") status: String): CharacterResult
 }
