@@ -7,11 +7,13 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.figueroa.rickandmortyapp.widgets.showToast
 
@@ -25,32 +27,34 @@ fun RickAndMortyAppBar(
     onBackPressed: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    TopAppBar(
-        title = {
-            Text(text = title)
-        },
-        navigationIcon = {
-            if (!isHome) {
-                IconButton(onClick = { onBackPressed.invoke() }) {
-                    if (icon != null) {
-                        Icon(imageVector = icon, contentDescription = "Arrow Back")
+    Surface(shadowElevation = 8.dp) {
+        TopAppBar(
+            title = {
+                Text(text = title)
+            },
+            navigationIcon = {
+                if (!isHome) {
+                    IconButton(onClick = { onBackPressed.invoke() }) {
+                        if (icon != null) {
+                            Icon(imageVector = icon, contentDescription = "Arrow Back")
+                        }
                     }
+                } else {
+                    Box {}
                 }
-            } else {
-                Box {}
-            }
-        },
-        actions = {
-            if (isHome) {
-                IconButton(onClick = { showToast(context = context, message = "Coming soon") }) {
-                    Icon(imageVector = Icons.Rounded.Search, contentDescription = "Search action")
+            },
+            actions = {
+                if (isHome) {
+                    IconButton(onClick = { showToast(context = context, message = "Coming soon") }) {
+                        Icon(imageVector = Icons.Rounded.Search, contentDescription = "Search action")
+                    }
+                    IconButton(onClick = { showToast(context = context, message = "Coming soon") }) {
+                        Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = "More actions")
+                    }
+                } else {
+                    Box {}
                 }
-                IconButton(onClick = { showToast(context = context, message = "Coming soon") }) {
-                    Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = "More actions")
-                }
-            } else {
-                Box {}
-            }
-        },
-    )
+            },
+        )
+    }
 }
