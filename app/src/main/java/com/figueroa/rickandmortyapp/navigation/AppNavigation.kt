@@ -12,7 +12,7 @@ import com.figueroa.rickandmortyapp.screens.home.HomeScreenViewModel
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AppScreens.HomeScreen.name) {
+    NavHost(navController = navController, startDestination = AppScreens.SplashScreen.name) {
         composable(route = AppScreens.SplashScreen.name) {
             SplashScreen(navController = navController)
         }
