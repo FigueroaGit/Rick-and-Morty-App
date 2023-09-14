@@ -1,4 +1,4 @@
-package com.figueroa.rickandmortyapp.screens.home
+package com.figueroa.rickandmortyapp.screens.characters
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(private val repository: CharactersRepository) :
+class CharactersScreenViewModel @Inject constructor(private val repository: CharactersRepository) :
     ViewModel() {
 
     var list: List<CharacterResult> by mutableStateOf(listOf())

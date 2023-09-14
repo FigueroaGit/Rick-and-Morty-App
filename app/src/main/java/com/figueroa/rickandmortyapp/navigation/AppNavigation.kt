@@ -6,8 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.figueroa.rickandmortyapp.screens.SplashScreen
-import com.figueroa.rickandmortyapp.screens.home.HomeScreen
-import com.figueroa.rickandmortyapp.screens.home.HomeScreenViewModel
+import com.figueroa.rickandmortyapp.screens.characters.CharactersScreen
+import com.figueroa.rickandmortyapp.screens.characters.CharactersScreenViewModel
+import com.figueroa.rickandmortyapp.screens.characters.DetailsCharacterScreen
 
 @Composable
 fun AppNavigation() {
@@ -16,9 +17,12 @@ fun AppNavigation() {
         composable(route = AppScreens.SplashScreen.name) {
             SplashScreen(navController = navController)
         }
-        composable(route = AppScreens.HomeScreen.name) {
-            val homeScreenViewModel = hiltViewModel<HomeScreenViewModel>()
-            HomeScreen(navController = navController, homeScreenViewModel)
+        composable(route = AppScreens.CharactersScreen.name) {
+            val homeScreenViewModel = hiltViewModel<CharactersScreenViewModel>()
+            CharactersScreen(navController = navController, homeScreenViewModel)
+        }
+        composable(route = AppScreens.DetailsCharacterScreen.name) {
+            DetailsCharacterScreen(navController = navController)
         }
     }
 }

@@ -4,12 +4,14 @@ import java.lang.IllegalArgumentException
 
 enum class AppScreens {
     SplashScreen,
-    HomeScreen, ;
+    CharactersScreen,
+    DetailsCharacterScreen;
     companion object {
         fun fromRoute(route: String?): AppScreens = when (route?.substringBefore("/")) {
             SplashScreen.name -> SplashScreen
-            HomeScreen.name -> HomeScreen
-            null -> HomeScreen
+            CharactersScreen.name -> CharactersScreen
+            DetailsCharacterScreen.name -> DetailsCharacterScreen
+            null -> CharactersScreen
             else -> throw IllegalArgumentException("Route $route is not recognized")
         }
     }

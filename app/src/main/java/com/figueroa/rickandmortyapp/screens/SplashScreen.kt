@@ -38,7 +38,7 @@ fun SplashScreen(navController: NavHostController = NavHostController(LocalConte
             ),
         )
         delay(2000L)
-        navController.navigate(AppScreens.HomeScreen.name)
+        navController.navigate(AppScreens.CharactersScreen.name)
     })
 
     Image(

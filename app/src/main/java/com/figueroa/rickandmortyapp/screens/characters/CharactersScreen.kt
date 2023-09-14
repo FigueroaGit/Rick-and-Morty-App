@@ -1,4 +1,4 @@
-package com.figueroa.rickandmortyapp.screens.home
+package com.figueroa.rickandmortyapp.screens.characters
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,12 +39,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.figueroa.rickandmortyapp.components.RickAndMortyAppBar
 import com.figueroa.rickandmortyapp.model.CharacterResult
+import com.figueroa.rickandmortyapp.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun CharactersScreen(
     navController: NavHostController,
-    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
+    homeScreenViewModel: CharactersScreenViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -62,7 +63,7 @@ fun HomeScreen(
 @Composable
 fun CharacterList(
     navController: NavController,
-    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
+    homeScreenViewModel: CharactersScreenViewModel = hiltViewModel(),
 ) {
     val listOfCharacters = homeScreenViewModel.list
     if (homeScreenViewModel.isLoading) {
@@ -88,36 +89,39 @@ fun CharacterItem(
     navController: NavController,
 ) {
     Card(
-        modifier = Modifier.padding(8.dp).clickable { },
+        modifier = Modifier.padding(8.dp),
         shape = RoundedCornerShape(4.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(characterResult.image)
-                    .build(),
-                contentDescription = "Character Image",
-                modifier = Modifier.align(Alignment.CenterHorizontally).width(200.dp)
-                    .height(200.dp).clip(RoundedCornerShape(4.dp)),
-                contentScale = ContentScale.Crop,
-            )
-            Column(verticalArrangement = Arrangement.SpaceEvenly) {
-                Spacer(modifier = Modifier.padding(8.dp))
-                Text(
-                    text = characterResult.name,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+        Box(modifier = Modifier.clickable { navController.navigate(AppScreens.DetailsCharacterScreen.name) }){
+            Column(modifier = Modifier.padding(8.dp)) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current).data(characterResult.image)
+                        .build(),
+                    contentDescription = "Character Image",
+                    modifier = Modifier.align(Alignment.CenterHorizontally).width(200.dp)
+                        .height(200.dp).clip(RoundedCornerShape(4.dp)),
+                    contentScale = ContentScale.Crop,
                 )
-                Spacer(modifier = Modifier.padding(8.dp))
-                Text(
-                    text = characterResult.gender,
-                    fontWeight = FontWeight.Light,
-                    fontSize = 14.sp,
-                )
+                Column(verticalArrangement = Arrangement.SpaceEvenly) {
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Text(
+                        text = characterResult.name,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Text(
+                        text = characterResult.gender,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 14.sp,
+                    )
+                }
             }
         }
+
     }
 }
