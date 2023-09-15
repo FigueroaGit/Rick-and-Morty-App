@@ -18,4 +18,15 @@ class CharactersRepository @Inject constructor(private val API: CharactersAPI) {
             Resource.Error(message = exception.message.toString())
         }
     }
+
+    suspend fun getSingleCharacter(characterId: String) : Resource<CharacterResult> {
+        val response = try {
+            Resource.Loading(data = true)
+            API.getSingleCharacter(characterId)
+        } catch (exception: Exception) {
+            return Resource.Error(message = "An error occurred ${exception.message}")
+        }
+        Resource.Loading(data = false)
+        return Resource.Success(data = response)
+    }
 }

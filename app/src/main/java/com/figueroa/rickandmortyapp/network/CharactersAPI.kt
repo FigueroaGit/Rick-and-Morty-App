@@ -14,7 +14,7 @@ interface CharactersAPI {
     suspend fun getAllCharacters(): RickAndMortyCharacter
 
     @GET("character/{id}")
-    suspend fun getSingleCharacter(@Path("id") id: Int): CharacterResult
+    suspend fun getSingleCharacter(@Path("id") id: String): CharacterResult
 
     @GET("character/{ids}")
     suspend fun getMultipleCharacters(@Path("ids") ids: Array<Int>): CharacterResult

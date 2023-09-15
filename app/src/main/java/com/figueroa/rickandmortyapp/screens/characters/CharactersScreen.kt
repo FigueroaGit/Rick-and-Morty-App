@@ -94,7 +94,7 @@ fun CharacterItem(
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
-        Box(modifier = Modifier.clickable { navController.navigate(AppScreens.DetailsCharacterScreen.name) }){
+        Box(modifier = Modifier.clickable { navController.navigate(AppScreens.DetailsCharacterScreen.name +"/${characterResult.id}") }) {
             Column(modifier = Modifier.padding(8.dp)) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(characterResult.image)
@@ -122,6 +122,5 @@ fun CharacterItem(
                 }
             }
         }
-
     }
 }
