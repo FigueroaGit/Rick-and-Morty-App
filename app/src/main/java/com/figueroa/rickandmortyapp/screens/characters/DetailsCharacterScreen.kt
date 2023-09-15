@@ -1,6 +1,7 @@
 package com.figueroa.rickandmortyapp.screens.characters
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -49,9 +53,10 @@ fun DetailsCharacterScreen(
     characterId: String,
     viewModel: DetailsScreenViewModel = hiltViewModel(),
 ) {
-    val singleCharacter = produceState<Resource<CharacterResult>>(initialValue = Resource.Loading()) {
-        value = viewModel.getSingleCharacter(characterId)
-    }.value
+    val singleCharacter =
+        produceState<Resource<CharacterResult>>(initialValue = Resource.Loading()) {
+            value = viewModel.getSingleCharacter(characterId)
+        }.value
     Box {
         Card(
             modifier = Modifier
@@ -64,7 +69,7 @@ fun DetailsCharacterScreen(
                 bottomEnd = 64.dp,
             ),
             colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.cardElevation(10.dp),
+            elevation = CardDefaults.cardElevation(8.dp),
         ) {
             Box(
                 modifier = Modifier
@@ -75,7 +80,14 @@ fun DetailsCharacterScreen(
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = "Arrow Back")
             }
         }
-        CharacterCardDetails(singleCharacter)
+        if (singleCharacter.data == null) {
+            Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                CircularProgressIndicator()
+                Text(text = "Loading...")
+            }
+        } else {
+            CharacterCardDetails(singleCharacter)
+        }
     }
 }
 
@@ -97,23 +109,65 @@ fun CharacterCardDetails(singleCharacter: Resource<CharacterResult>) {
                 contentDescription = "Character Image",
             )
             Column(
-                modifier = Modifier
+                modifier = Modifier.fillMaxWidth().background(
+                    Brush.verticalGradient(
+                        0F to Color.Transparent,
+                        .5F to Color.Black.copy(alpha = 0.5F),
+                        1F to Color.Black.copy(alpha = 0.8F),
+                    ),
+                )
                     .align(Alignment.BottomStart)
                     .padding(16.dp),
             ) {
-                Row(horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
                         text = singleCharacter.data?.name.toString(),
+                        color = Color.White,
                         fontWeight = FontWeight.Black,
                         style = MaterialTheme.typography.headlineMedium,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Icon(painter = painterResource(id = R.drawable.male_gender), contentDescription = "Gender Icon")
+                    when (singleCharacter.data?.gender) {
+                        "Male" -> Icon(
+                            painter = painterResource(id = R.drawable.male_gender),
+                            contentDescription = "Gender Icon",
+                            tint = Color.Blue,
+                        )
+
+                        "Female" -> Icon(
+                            painter = painterResource(id = R.drawable.female_gender),
+                            contentDescription = "Gender Icon",
+                            tint = Color.Magenta,
+                        )
+
+                        "Genderless" -> Icon(
+                            painter = painterResource(id = R.drawable.neutral_gender),
+                            contentDescription = "Gender Icon",
+                            tint = Color.Cyan,
+                        )
+
+                        "unknown" -> Icon(
+                            painter = painterResource(id = R.drawable.unknown_gender),
+                            contentDescription = "Gender Icon",
+                            tint = Color.LightGray,
+                        )
+                    }
                 }
-                Row(horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Rounded.LocationOn, contentDescription = "Gender Icon")
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.LocationOn,
+                        contentDescription = "Location Icon",
+                        tint = Color.White,
+                    )
                     Text(
                         text = singleCharacter.data?.location?.name.toString(),
+                        color = Color.White,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -139,14 +193,34 @@ fun CharacterCardDetails(singleCharacter: Resource<CharacterResult>) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Surface(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .size(8.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    color = Color.Green,
-                    content = {},
-                )
+                when (singleCharacter.data?.status) {
+                    "Alive" -> Surface(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(8.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.Green,
+                        content = {},
+                    )
+
+                    "Dead" -> Surface(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(8.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.Red,
+                        content = {},
+                    )
+
+                    "unknown" -> Surface(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(8.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        color = Color.LightGray,
+                        content = {},
+                    )
+                }
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = singleCharacter.data?.status.toString(),

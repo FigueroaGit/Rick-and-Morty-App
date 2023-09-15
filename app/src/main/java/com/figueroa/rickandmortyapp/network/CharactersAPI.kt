@@ -20,5 +20,5 @@ interface CharactersAPI {
     suspend fun getMultipleCharacters(@Path("ids") ids: Array<Int>): CharacterResult
 
     @GET("character/")
-    suspend fun getFilterCharacters(@Query("name") name: String, @Query("status") status: String): CharacterResult
+    suspend fun getFilterCharacters(@Query("name") name: String): CharacterResult
 }

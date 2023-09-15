@@ -4,23 +4,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Movie
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.figueroa.rickandmortyapp.navigation.AppScreens
 import com.figueroa.rickandmortyapp.widgets.CornerCardCut
 import com.figueroa.rickandmortyapp.widgets.showToast
 
@@ -92,6 +97,46 @@ fun RickAndMortyAppBar(
 }
 
 @Composable
+fun RickAndMortyBottomNavigationBar(navController: NavController) {
+    val screens = listOf(
+        "Characters",
+        "Episodes",
+        "Locations",
+    )
+    var selectedScreen by remember { mutableStateOf(screens.first()) }
+    Surface(shadowElevation = 8.dp) {
+        NavigationBar {
+            screens.forEach { screen ->
+                NavigationBarItem(
+                    icon = { Icon(getIconForScreen(screen), contentDescription = screen) },
+                    label = { Text(screen) },
+                    selected = screen == selectedScreen,
+                    onClick = {
+                        navController.navigate(
+                            when (screen) {
+                                "Characters" -> AppScreens.CharactersScreen.name
+                                else -> { "" }
+                            },
+                        )
+                    },
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun getIconForScreen(screen: String): ImageVector {
+    return when (screen) {
+        "Characters" -> Icons.Rounded.Person
+        "Episodes" -> Icons.Rounded.Movie
+        "Locations" -> Icons.Rounded.LocationOn
+        else -> Icons.Rounded.Person
+    }
+}
+
+@Composable
 fun CardCut(modifier: Modifier) {
     Text(
         text = "🎉 CINEMA TICKET 🎉",
@@ -102,13 +147,14 @@ fun CardCut(modifier: Modifier) {
         ),
         textAlign = TextAlign.Center,
         modifier = modifier
-            .fillMaxSize().padding(8.dp)
+            .fillMaxSize()
+            .padding(8.dp)
             .graphicsLayer {
                 shadowElevation = 8.dp.toPx()
                 shape = CornerCardCut(64.dp.toPx())
                 clip = true
             }
             .background(color = Color.White)
-            .padding(start = 32.dp, top = 64.dp, end = 32.dp, bottom = 64.dp)
+            .padding(start = 32.dp, top = 64.dp, end = 32.dp, bottom = 64.dp),
     )
 }
