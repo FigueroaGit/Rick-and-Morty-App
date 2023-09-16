@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.figueroa.rickandmortyapp.components.RickAndMortyAppBar
@@ -44,7 +43,7 @@ import com.figueroa.rickandmortyapp.navigation.AppScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersScreen(
-    navController: NavHostController,
+    navController: NavController,
     homeScreenViewModel: CharactersScreenViewModel = hiltViewModel(),
 ) {
     Scaffold(
@@ -94,7 +93,11 @@ fun CharacterItem(
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
-        Box(modifier = Modifier.clickable { navController.navigate(AppScreens.DetailsCharacterScreen.name +"/${characterResult.id}") }) {
+        Box(
+            modifier = Modifier.clickable {
+                navController.navigate(AppScreens.DetailsCharacterScreen.name + "/${characterResult.id}")
+            },
+        ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(characterResult.image)

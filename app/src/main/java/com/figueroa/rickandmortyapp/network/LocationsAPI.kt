@@ -11,16 +11,16 @@ import javax.inject.Singleton
 interface LocationsAPI {
 
     @GET("location")
-    fun getAllLocations(): RickAndMortyLocation
+    suspend fun getAllLocations(): RickAndMortyLocation
 
     @GET("location/{id}")
-    fun getSingleLocation(@Path("id") id: Int): LocationResult
+    suspend fun getSingleLocation(@Path("id") id: Int): LocationResult
 
     @GET("location/{ids}")
-    fun getMultipleLocations(@Path("ids") ids: Array<Int>): LocationResult
+    suspend fun getMultipleLocations(@Path("ids") ids: Array<Int>): LocationResult
 
     @GET("location/")
-    fun getFilterLocation(
+    suspend fun getFilterLocation(
         @Query("name") name: String,
         @Query("type") type: String,
         @Query("dimension") dimension: String,

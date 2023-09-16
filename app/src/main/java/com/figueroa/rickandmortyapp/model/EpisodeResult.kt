@@ -3,8 +3,7 @@ package com.figueroa.rickandmortyapp.model
 import com.google.gson.annotations.SerializedName
 
 data class EpisodeResult(
-    @SerializedName("air_date")
-    val airDate: String,
+    val air_date: String,
     val characters: List<String>,
     val created: String,
     val episode: String,

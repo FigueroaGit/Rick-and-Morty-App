@@ -11,6 +11,9 @@ import com.figueroa.rickandmortyapp.screens.SplashScreen
 import com.figueroa.rickandmortyapp.screens.characters.CharactersScreen
 import com.figueroa.rickandmortyapp.screens.characters.CharactersScreenViewModel
 import com.figueroa.rickandmortyapp.screens.characters.DetailsCharacterScreen
+import com.figueroa.rickandmortyapp.screens.episodes.EpisodesScreen
+import com.figueroa.rickandmortyapp.screens.episodes.EpisodesScreenViewModel
+import com.figueroa.rickandmortyapp.screens.locations.LocationsScreen
 
 @Composable
 fun AppNavigation() {
@@ -34,7 +37,13 @@ fun AppNavigation() {
             backStackEntry.arguments?.getString("characterId").let {
                 DetailsCharacterScreen(navController = navController, characterId = it.toString())
             }
-
+        }
+        composable(route = AppScreens.EpisodesScreen.name) {
+            val episodesScreenViewModel = hiltViewModel<EpisodesScreenViewModel>()
+            EpisodesScreen(navController = navController, episodesScreenViewModel)
+        }
+        composable(route = AppScreens.LocationsScreen.name) {
+            LocationsScreen(navController = navController)
         }
     }
 }

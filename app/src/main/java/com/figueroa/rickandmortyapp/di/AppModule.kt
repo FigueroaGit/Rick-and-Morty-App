@@ -4,6 +4,7 @@ import com.figueroa.rickandmortyapp.network.CharactersAPI
 import com.figueroa.rickandmortyapp.network.EpisodesAPI
 import com.figueroa.rickandmortyapp.network.LocationsAPI
 import com.figueroa.rickandmortyapp.repository.CharactersRepository
+import com.figueroa.rickandmortyapp.repository.EpisodesRepository
 import com.figueroa.rickandmortyapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,10 @@ object AppModule {
     @Singleton
     @Provides
     fun provideCharactersRepository(API: CharactersAPI) = CharactersRepository(API)
+
+    @Singleton
+    @Provides
+    fun provideEpisodesRepository(API: EpisodesAPI) = EpisodesRepository(API)
 
     @Singleton
     @Provides

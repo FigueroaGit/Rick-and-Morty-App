@@ -11,15 +11,15 @@ import javax.inject.Singleton
 interface EpisodesAPI {
 
     @GET("episode")
-    fun getAllEpisodes(): RickAndMortyEpisode
+    suspend fun getAllEpisodes(): RickAndMortyEpisode
 
     @GET("episode/{id}")
-    fun getSingleEpisode(@Path("id") id: Int): EpisodeResult
+    suspend fun getSingleEpisode(@Path("id") id: Int): EpisodeResult
 
     @GET("episode/{ids}")
-    fun getMultipleEpisode(@Path("ids") ids: Array<Int>): EpisodeResult
+    suspend fun getMultipleEpisode(@Path("ids") ids: Array<Int>): EpisodeResult
 
     @GET("episode/")
-    fun getFilterEpisodes(@Query("name") name: String, @Query("episode") episode: String): EpisodeResult
+    suspend fun getFilterEpisodes(@Query("name") name: String, @Query("episode") episode: String): EpisodeResult
 
 }
