@@ -93,7 +93,7 @@ fun RickAndMortyAppBar(
                         )
                     }
                     IconButton(onClick = {
-                        showDialog.value = true
+                        showDialog.value = !showDialog.value
                     }) {
                         Icon(
                             imageVector = Icons.Rounded.MoreVert,
@@ -164,7 +164,10 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
         val items = listOf("Episodes", "Locations")
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = {
+                expanded = false
+                showDialog.value = false
+            },
             modifier = Modifier
                 .width(140.dp)
                 .background(Color.White),
@@ -176,14 +179,14 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                         fontWeight = FontWeight.W300,
                     )
                 }, onClick = {
+                    expanded = false
+                    showDialog.value = false
                     navController.navigate(
                         when (text) {
                             "Episodes" -> AppScreens.EpisodesScreen.name
                             else -> AppScreens.LocationsScreen.name
                         },
                     )
-                    expanded = false
-                    showDialog.value = false
                 }, leadingIcon = {
                     Icon(
                         imageVector = when (text) {
